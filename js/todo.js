@@ -57,7 +57,7 @@ function clearTodoLs(){
     while(todoList.children.length > 0){
         todoList.children[0].remove();
     }
-}*/
+} */
 
 /*let todoItem = '';
 let li = '';
