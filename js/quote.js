@@ -34,10 +34,6 @@ const quotes = [{
     quote : 'You only live once, but if you do it right, once is enough.',
     author : 'Mae West'}
 ];
-const tips = [{
-    tips : 'Ctrl + Shift + L [Control + G (MAC)]',
-    contents : '특정 문자열 모두 선택'
-}]
 
 const quote = document.querySelector('#quote span:first-child');
 const author = document.querySelector('#quote span:last-child');

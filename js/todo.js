@@ -3,12 +3,16 @@ const todoForm = document.querySelector('#todo-form');
 todoForm.addEventListener('submit', handleTodoSubmit);
 const todoList = document.querySelector('#todo-list');
 
-const todoArr = [];
-
+let todoArr = [];
+pageStart();
 function handleTodoSubmit(event){
-    event.preventDefault();    
-    paintTodo(todo.value);
-    todoArr.push(todo.value);
+    event.preventDefault();  
+    const todoObj = {
+        text : todo.value,
+        id:Date.now()
+    }; 
+    paintTodo(todoObj);
+    todoArr.push(todoObj);
     saveTodos();
     todo.value = '';
 }
@@ -20,23 +24,47 @@ function loadTodos(){
     const tmpTodos = localStorage.getItem("todos");
     if(tmpTodos){
         const parsedTodos = JSON.parse(tmpTodos);
-        parsedTodos.forEach(function(item){
+        /*parsedTodos.forEach(function(item){
+            paintTodo(item);
+            todoArr.push(item);
+        });*/
+        //더 간결한 방법 
+        todoArr = parsedTodos;
+        parsedTodos.forEach(paintTodo);
 
-        });
     }
 }
 function paintTodo(newTodo){
     const li = document.createElement('li');
-    li.innerHTML = newTodo;
+    li.innerHTML = newTodo.text;
+    li.id = newTodo.id;
     const button = document.createElement('button');
-    button.innerHTML = 'X';
+    button.innerHTML = '❌';
     button.addEventListener('click', removeTodo);
     li.append(button);
     todoList.appendChild(li);
 }
 
 function removeTodo(event){
-    event.target.parentElement.remove();
+    const target = event.target.parentElement;
+    target.remove();
+    //아래처럼 하면 전역변수를 만들어야 한다. 화살표함수를 쓰면 해결.
+    //todoArr = todoArr.filter(removingElement);
+
+    todoArr = todoArr.filter(element => Number(target.id) !== element.id);
+
+    saveTodos();
+    /*const value = event.target.parentElement.innerText.replaceAll('❌','');
+    if(todoArr.indexOf(value) != -1){
+        todoArr.splice(todoArr.indexOf(value),1);
+    }
+    console.log(1)
+    */
+}
+
+
+function pageStart(){
+    loadTodos();
 }
 /*
 function paintTodoLs(){
